@@ -1,12 +1,12 @@
 /**
  * @file main.cpp
  * @brief Entry point for the Smart Campus Management System (SCMS)
- * @author [Your Name] | Roll No: [XXXX]
+ * @author Aimen Fatima | Roll No: 25-cs-041
  * @course CS-104L: Object-Oriented Programming
  * @inst HITEC University Taxila
  * @date 2025
  *
- * OOP Concepts: All 25 concepts demonstrated through the 6 modules.
+ * OOP Concepts: All concepts demonstrated through the 6 modules.
  *               Runtime polymorphism via base pointers (Person*, Reportable*).
  *               Exception handling with try/catch throughout.
  *               Memory management: dynamic allocation and deallocation.
