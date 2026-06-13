@@ -1,7 +1,7 @@
 /**
  * @file HostelBlock.h
  * @brief HostelBlock — composed of Room objects (composition)
- * @author [Your Name] | Roll No: [XXXX]
+ * @author Aimen Fatima | Roll No: 25-cs-041
  * @course CS-104L: Object-Oriented Programming
  * @inst HITEC University Taxila
  * @date 2025
