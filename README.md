@@ -1,7 +1,7 @@
 # Smart Campus Management System (SCMS)
 
 ## Project Info
-- Student: **[Your Name]** | Roll No: **[XXXX]** | Course: OOP (CS-104L) | HITEC University Taxila
+- Student: Aimen | Roll No: 25-cs-041 | Course: OOP (CS-104L) | HITEC University Taxila
 
 ## Project Description
 The Smart Campus Management System (SCMS) is a console-based C++ application that
@@ -82,4 +82,4 @@ g++ -std=c++17 -Wall -Wextra src/person/*.cpp src/course/*.cpp src/library/*.cpp
 > as PNG to `docs/class_diagram.png`.
 
 ## GitHub Repository
-https://github.com/[username]/HITEC-OOP-SCMS-[RollNo]
+https://github.com/25-cs-041-prog/HITEC-OOP-SCMS-25-CS-041
