@@ -1,7 +1,7 @@
 /**
  * @file Person.h
  * @brief Abstract base class for all persons in the SCMS
- * @author [Your Name] | Roll No: [XXXX]
+ * @author Aimen Fatima | Roll No: 25-s-041
  * @course CS-104L: Object-Oriented Programming
  * @inst HITEC University Taxila
  * @date 2025
