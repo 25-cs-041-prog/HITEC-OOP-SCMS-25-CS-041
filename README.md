@@ -1,7 +1,7 @@
 # Smart Campus Management System (SCMS)
 
 ## Project Info
-- Student: Aimen Fatima | Roll No: 25-cs-041 | Course: OOP (CS-104L) | HITEC University Taxila
+Student: Aimen Fatima | Roll No: 25-cs-041 | Course: OOP (CS-104L) | HITEC University Taxila
 
 ## Project Description
 The Smart Campus Management System (SCMS) is a console-based C++ application that
