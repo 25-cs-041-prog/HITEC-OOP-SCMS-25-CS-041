@@ -1,26 +1,13 @@
-/**
- * @file GradStudent.cpp
- * @brief Implementation of GradStudent (multi-level inheritance)
- * @author Aimen Fatima | Roll No: 25-cs-041
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Multi-level Inheritance, Constructor Chaining, Override
- */
 
 #include "GradStudent.h"
 #include <iostream>
 #include <iomanip>
 using namespace std;
 
-// ── Default Constructor ────────────────────────────────────────
 GradStudent::GradStudent()
     : Student(),
       thesisTitle("TBD"), supervisorName("TBD"), researchArea("TBD") {}
 
-// ── Parameterised Constructor ──────────────────────────────────
-// Chains all the way up: GradStudent → Student → Person
 GradStudent::GradStudent(const string& name, const string& cnic, int age,
                          const string& contact, const string& rollNo,
                          int semester, double gpa,
@@ -32,7 +19,6 @@ GradStudent::GradStudent(const string& name, const string& cnic, int age,
       supervisorName(supervisorName),
       researchArea(researchArea) {}
 
-// ── displayInfo() ──────────────────────────────────────────────
 void GradStudent::displayInfo() const {
     cout << "┌─────────────────────────────────┐\n";
     cout << "│      GRADUATE STUDENT RECORD    │\n";
