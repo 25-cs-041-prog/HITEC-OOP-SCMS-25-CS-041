@@ -1,11 +1,3 @@
-/**
- * @file Room.cpp
- * @brief Implementation of the Room class
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- */
 
 #include "Room.h"
 #include <iostream>
@@ -22,7 +14,6 @@ Room::Room(int roomNumber, const string& type, int floor)
     : roomNumber(roomNumber), type(type), floor(floor),
       occupantCount(0) {
     for (int i = 0; i < MAX_OCCUPANTS; i++) occupants[i] = nullptr;
-    // Set maxOccupants based on room type
     if      (type == "single") maxOccupants = 1;
     else if (type == "double") maxOccupants = 2;
     else if (type == "triple") maxOccupants = 3;
@@ -45,7 +36,7 @@ bool Room::removeOccupant(const string& rollNo) {
         if (occupants[i] && occupants[i]->getRollNo() == rollNo) {
             cout << "[Room " << roomNumber << "] "
                  << occupants[i]->getName() << " vacated.\n";
-            // Shift left
+            
             for (int j = i; j < occupantCount - 1; j++)
                 occupants[j] = occupants[j + 1];
             occupants[--occupantCount] = nullptr;

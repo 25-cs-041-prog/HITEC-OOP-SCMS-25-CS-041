@@ -1,11 +1,3 @@
-/**
- * @file LibraryItem.cpp
- * @brief Implementation of the LibraryItem abstract base class
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- */
 
 #include "LibraryItem.h"
 #include <iostream>

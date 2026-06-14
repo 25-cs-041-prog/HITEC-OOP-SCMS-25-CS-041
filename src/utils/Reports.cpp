@@ -1,15 +1,3 @@
-/**
- * @file Reports.cpp
- * @brief Implementation of all campus reporting functions
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: std::sort with custom comparator, std::find_if,
- *               Polymorphism via base pointer (Person*),
- *               File I/O for report output, Sorting & Searching
- */
 
 #include "Reports.h"
 #include "Utils.h"
@@ -19,18 +7,15 @@
 #include <algorithm>
 using namespace std;
 
-// ── sortStudentsByGPA() ───────────────────────────────────────
-// Uses std::sort with a lambda comparator (descending GPA)
 void Reports::sortStudentsByGPA(Student* students[], int count) {
     if (count == 0) {
         cout << "No students to sort.\n";
         return;
     }
 
-    // std::sort with custom lambda comparator
     sort(students, students + count,
          [](const Student* a, const Student* b) {
-             return a->getGPA() > b->getGPA(); // descending
+             return a->getGPA() > b->getGPA(); 
          });
 
     Utils::printHeader("STUDENTS SORTED BY GPA");
@@ -50,8 +35,6 @@ void Reports::sortStudentsByGPA(Student* students[], int count) {
     }
 }
 
-// ── displayAllStudents() ──────────────────────────────────────
-// Demonstrates runtime polymorphism: calls displayInfo() via Person*
 void Reports::displayAllStudents(Student* students[], int count) {
     Utils::printHeader("ALL STUDENTS");
     if (count == 0) {
@@ -59,16 +42,13 @@ void Reports::displayAllStudents(Student* students[], int count) {
         return;
     }
     for (int i = 0; i < count; i++) {
-        Person* p = students[i]; // upcast to base pointer
-        p->displayInfo();        // runtime polymorphic dispatch
+        Person* p = students[i]; 
+        p->displayInfo();  
     }
 }
 
-// ── findStudentByRollNo() ─────────────────────────────────────
-// Uses std::find_if with a lambda predicate
 Student* Reports::findStudentByRollNo(Student* students[], int count,
                                        const string& rollNo) {
-    // Wrap raw array in a pointer range for std::find_if
     Student** result = find_if(students, students + count,
         [&rollNo](const Student* s) {
             return s->getRollNo() == rollNo;
@@ -79,22 +59,18 @@ Student* Reports::findStudentByRollNo(Student* students[], int count,
     }
     return nullptr;
 }
-
-// ── reportOverdueItems() ──────────────────────────────────────
 void Reports::reportOverdueItems(Library& library) {
     Utils::printHeader("LIBRARY OVERDUE REPORT");
     cout << "  (Items checked out > 14 days are flagged)\n";
     library.displayIssuedItems();
 }
 
-// ── displayLibrarySummary() ───────────────────────────────────
 void Reports::displayLibrarySummary(Library& library) {
     Utils::printHeader("LIBRARY SUMMARY");
     cout << "  Total items in catalog: " << library.getCatalogSize() << "\n";
     library.displayCatalog();
 }
 
-// ── displayAllFeeRecords() ────────────────────────────────────
 void Reports::displayAllFeeRecords(FeeRecord records[], int count) {
     Utils::printHeader("ALL FEE RECORDS");
     if (count == 0) {
@@ -105,7 +81,6 @@ void Reports::displayAllFeeRecords(FeeRecord records[], int count) {
         records[i].displayFeeRecord();
 }
 
-// ── reportOutstandingBalances() ───────────────────────────────
 void Reports::reportOutstandingBalances(FeeRecord records[], int count) {
     Utils::printHeader("OUTSTANDING BALANCES");
     bool found = false;
@@ -121,14 +96,11 @@ void Reports::reportOutstandingBalances(FeeRecord records[], int count) {
     if (!found) cout << "  No outstanding balances.\n";
 }
 
-// ── displayHostelReport() ─────────────────────────────────────
-// Uses Reportable* pointer to demonstrate polymorphism
 void Reports::displayHostelReport(HostelManager& hostelMgr) {
-    Reportable* rep = &hostelMgr; // upcast to Reportable*
-    rep->generateReport();        // polymorphic dispatch
+    Reportable* rep = &hostelMgr; 
+    rep->generateReport();   
 }
 
-// ── generateCampusReport() ────────────────────────────────────
 void Reports::generateCampusReport(
     Student* students[], int studentCount,
     Faculty* faculty[],  int facultyCount,
@@ -136,32 +108,26 @@ void Reports::generateCampusReport(
     FeeRecord feeRecords[], int feeCount,
     HostelManager& hostelMgr)
 {
-    (void)faculty; // reserved for future use
+    (void)faculty;
     Utils::printHeader("CONSOLIDATED CAMPUS REPORT");
     cout << "  Campus: HITEC University Taxila\n";
     cout << "  Course: CS-104L Object-Oriented Programming\n\n";
 
-    // ── Students ───────────────────────────────────────────
     cout << "  Students Registered : " << studentCount << "\n";
     cout << "  Faculty Registered  : " << facultyCount << "\n";
     cout << "  Library Items       : " << library.getCatalogSize() << "\n\n";
 
-    // Sort students by GPA for the report
     if (studentCount > 0)
         sortStudentsByGPA(students, studentCount);
 
-    // Fee summary
     double totalOutstanding = 0.0;
     for (int i = 0; i < feeCount; i++)
         totalOutstanding += feeRecords[i].getBalance();
     cout << "\n  Total Outstanding Fees: Rs. " << fixed
          << setprecision(2) << totalOutstanding << "\n";
 
-    // Hostel report
     hostelMgr.generateReport();
 }
-
-// ── saveCampusReportToFile() ──────────────────────────────────
 void Reports::saveCampusReportToFile(
     const string& filename,
     Student* students[], int studentCount,

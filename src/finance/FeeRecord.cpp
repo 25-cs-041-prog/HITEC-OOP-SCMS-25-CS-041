@@ -1,31 +1,17 @@
-/**
- * @file FeeRecord.cpp
- * @brief Implementation of FeeRecord — copy semantics and operator-=
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Copy Constructor, Copy Assignment Operator,
- *               Operator Overloading (-=), Encapsulation
- */
 
 #include "FeeRecord.h"
 #include <iostream>
 #include <iomanip>
 using namespace std;
 
-// ── Helper ─────────────────────────────────────────────────────
 void FeeRecord::recalculateBalance() {
     balance = (semesterFee + hostelFee + libraryFine) - totalPaid;
 }
 
-// ── Default Constructor ────────────────────────────────────────
 FeeRecord::FeeRecord()
     : studentRef(nullptr), semesterFee(0.0), hostelFee(0.0),
       libraryFine(0.0), totalPaid(0.0), balance(0.0) {}
 
-// ── Parameterised Constructor ──────────────────────────────────
 FeeRecord::FeeRecord(Student* student, double semFee,
                      double hostFee, double libFine)
     : studentRef(student), semesterFee(semFee),
@@ -34,8 +20,6 @@ FeeRecord::FeeRecord(Student* student, double semFee,
     recalculateBalance();
 }
 
-// ── Copy Constructor (Deep Copy) ──────────────────────────────
-// Copies all numeric data; keeps the same student pointer (aggregation)
 FeeRecord::FeeRecord(const FeeRecord& other)
     : studentRef(other.studentRef),
       semesterFee(other.semesterFee),
@@ -47,9 +31,8 @@ FeeRecord::FeeRecord(const FeeRecord& other)
          << (studentRef ? studentRef->getRollNo() : "N/A") << "\n";
 }
 
-// ── Copy Assignment Operator ──────────────────────────────────
 FeeRecord& FeeRecord::operator=(const FeeRecord& other) {
-    if (this != &other) { // self-assignment guard
+    if (this != &other) { 
         studentRef  = other.studentRef;
         semesterFee = other.semesterFee;
         hostelFee   = other.hostelFee;
@@ -61,8 +44,6 @@ FeeRecord& FeeRecord::operator=(const FeeRecord& other) {
     return *this;
 }
 
-// ── operator-= ────────────────────────────────────────────────
-// Records a payment: reduces balance, increases totalPaid
 FeeRecord& FeeRecord::operator-=(double payment) {
     if (payment <= 0) {
         cout << "[FeeRecord] Payment must be positive.\n";
@@ -76,7 +57,6 @@ FeeRecord& FeeRecord::operator-=(double payment) {
     return *this;
 }
 
-// ── addLibraryFine() ──────────────────────────────────────────
 void FeeRecord::addLibraryFine(double fine) {
     libraryFine += fine;
     recalculateBalance();
@@ -84,7 +64,6 @@ void FeeRecord::addLibraryFine(double fine) {
          << " added. New balance: Rs. " << balance << "\n";
 }
 
-// ── displayFeeRecord() ────────────────────────────────────────
 void FeeRecord::displayFeeRecord() const {
     cout << "┌─────────────────────────────────────┐\n";
     cout << "│           FEE RECORD                │\n";

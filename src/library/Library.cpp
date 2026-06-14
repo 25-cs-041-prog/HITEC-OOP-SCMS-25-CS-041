@@ -1,15 +1,3 @@
-/**
- * @file Library.cpp
- * @brief Implementation of the Library class
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Destructor (memory cleanup), File I/O with fstream,
- *               Exception Handling, Array of polymorphic pointers,
- *               Runtime Polymorphism (checkout via base ptr)
- */
 
 #include "Library.h"
 #include <iostream>
@@ -17,22 +5,18 @@
 #include <sstream>
 using namespace std;
 
-// ── Constructor ────────────────────────────────────────────────
 Library::Library(const string& catalogFile)
     : catalogSize(0), issuedCount(0), catalogFile(catalogFile) {
     for (int i = 0; i < MAX_CATALOG; i++) catalog[i] = nullptr;
 }
 
-// ── Destructor ─────────────────────────────────────────────────
-// Frees every dynamically allocated LibraryItem in the catalog
 Library::~Library() {
     for (int i = 0; i < catalogSize; i++) {
-        delete catalog[i];   // polymorphic delete via virtual destructor
+        delete catalog[i];  
         catalog[i] = nullptr;
     }
 }
 
-// ── addItem() ─────────────────────────────────────────────────
 void Library::addItem(LibraryItem* item) {
     if (catalogSize < MAX_CATALOG) {
         catalog[catalogSize++] = item;
@@ -41,12 +25,11 @@ void Library::addItem(LibraryItem* item) {
     }
 }
 
-// ── removeItem() ──────────────────────────────────────────────
 void Library::removeItem(const string& itemID) {
     for (int i = 0; i < catalogSize; i++) {
         if (catalog[i]->getItemID() == itemID) {
             delete catalog[i];
-            // Shift array left
+            
             for (int j = i; j < catalogSize - 1; j++)
                 catalog[j] = catalog[j + 1];
             catalog[--catalogSize] = nullptr;
@@ -57,8 +40,6 @@ void Library::removeItem(const string& itemID) {
     throw ItemNotFoundException(itemID);
 }
 
-// ── searchByTitle() ───────────────────────────────────────────
-// Loops through catalog; returns first matching item (or nullptr)
 LibraryItem* Library::searchByTitle(const string& title) const {
     for (int i = 0; i < catalogSize; i++) {
         if (catalog[i]->getTitle() == title)
@@ -67,7 +48,6 @@ LibraryItem* Library::searchByTitle(const string& title) const {
     return nullptr;
 }
 
-// ── searchByID() ──────────────────────────────────────────────
 LibraryItem* Library::searchByID(const string& itemID) const {
     for (int i = 0; i < catalogSize; i++) {
         if (catalog[i]->getItemID() == itemID)
@@ -76,13 +56,12 @@ LibraryItem* Library::searchByID(const string& itemID) const {
     return nullptr;
 }
 
-// ── issueItem() ───────────────────────────────────────────────
 void Library::issueItem(const string& rollNo, const string& itemID,
                         const string& date) {
     LibraryItem* item = searchByID(itemID);
     if (!item) throw ItemNotFoundException(itemID);
 
-    item->checkout(); // polymorphic call
+    item->checkout();
 
     if (issuedCount < MAX_ISSUED) {
         issuedItems[issuedCount++] = {rollNo, itemID, date, 0};
@@ -91,8 +70,6 @@ void Library::issueItem(const string& rollNo, const string& itemID,
     }
 }
 
-// ── returnItem() ──────────────────────────────────────────────
-// Throws OverdueException if daysKept > 14
 void Library::returnItem(const string& rollNo, const string& itemID,
                          int daysKept) {
     const int LOAN_PERIOD = 14;
@@ -100,11 +77,10 @@ void Library::returnItem(const string& rollNo, const string& itemID,
     LibraryItem* item = searchByID(itemID);
     if (!item) throw ItemNotFoundException(itemID);
 
-    // Remove from issued records
     for (int i = 0; i < issuedCount; i++) {
         if (issuedItems[i].rollNo == rollNo &&
             issuedItems[i].itemID == itemID) {
-            // Shift left
+            
             for (int j = i; j < issuedCount - 1; j++)
                 issuedItems[j] = issuedItems[j + 1];
             issuedCount--;
@@ -112,9 +88,8 @@ void Library::returnItem(const string& rollNo, const string& itemID,
         }
     }
 
-    item->returnItem(); // polymorphic call
-
-    // Check for overdue
+    item->returnItem(); 
+    
     if (daysKept > LOAN_PERIOD) {
         int    overdueDays = daysKept - LOAN_PERIOD;
         double fine        = overdueDays * FINE_PER_DAY;
@@ -122,8 +97,6 @@ void Library::returnItem(const string& rollNo, const string& itemID,
     }
 }
 
-// ── saveToFile() ──────────────────────────────────────────────
-// Writes entire catalog to a text file using fstream
 void Library::saveToFile() const {
     ofstream outFile(catalogFile);
     if (!outFile.is_open()) {
@@ -133,7 +106,6 @@ void Library::saveToFile() const {
     }
 
     for (int i = 0; i < catalogSize; i++) {
-        // Dynamic cast to determine type for serialisation
         Book*    b = dynamic_cast<Book*>(catalog[i]);
         Journal* j = dynamic_cast<Journal*>(catalog[i]);
         if (b) outFile << b->toFileString() << "\n";
@@ -144,8 +116,6 @@ void Library::saveToFile() const {
     cout << "[Library] Catalog saved to '" << catalogFile << "'\n";
 }
 
-// ── loadFromFile() ────────────────────────────────────────────
-// Reads catalog from file; parses BOOK| and JOURNAL| lines
 void Library::loadFromFile() {
     ifstream inFile(catalogFile);
     if (!inFile.is_open()) {
@@ -154,7 +124,6 @@ void Library::loadFromFile() {
         return;
     }
 
-    // Free existing items first
     for (int i = 0; i < catalogSize; i++) {
         delete catalog[i];
         catalog[i] = nullptr;
@@ -176,14 +145,12 @@ void Library::loadFromFile() {
         if (tokenCount < 1) continue;
 
         if (tokens[0] == "BOOK" && tokenCount >= 8) {
-            // BOOK|itemID|title|author|year|isbn|genre|copies
             Book* b = new Book(
                 tokens[1], tokens[2], tokens[3],
                 stoi(tokens[4]), tokens[5], tokens[6], stoi(tokens[7])
             );
             addItem(b);
         } else if (tokens[0] == "JOURNAL" && tokenCount >= 8) {
-            // JOURNAL|itemID|title|author|year|issn|volume|issueNumber
             Journal* j = new Journal(
                 tokens[1], tokens[2], tokens[3],
                 stoi(tokens[4]), tokens[5], stoi(tokens[6]), stoi(tokens[7])
@@ -197,7 +164,6 @@ void Library::loadFromFile() {
          << " items from '" << catalogFile << "'\n";
 }
 
-// ── displayCatalog() ──────────────────────────────────────────
 void Library::displayCatalog() const {
     cout << "\n════════ LIBRARY CATALOG (" << catalogSize << " items) ════════\n";
     if (catalogSize == 0) {
@@ -205,11 +171,10 @@ void Library::displayCatalog() const {
         return;
     }
     for (int i = 0; i < catalogSize; i++) {
-        catalog[i]->displayInfo(); // polymorphic call
+        catalog[i]->displayInfo(); 
     }
 }
 
-// ── displayIssuedItems() ──────────────────────────────────────
 void Library::displayIssuedItems() const {
     cout << "\n════════ ISSUED ITEMS (" << issuedCount << ") ════════\n";
     if (issuedCount == 0) {
@@ -227,7 +192,6 @@ void Library::displayIssuedItems() const {
     }
 }
 
-// ── getCatalogItem() ──────────────────────────────────────────
 LibraryItem* Library::getCatalogItem(int i) const {
     if (i >= 0 && i < catalogSize) return catalog[i];
     return nullptr;

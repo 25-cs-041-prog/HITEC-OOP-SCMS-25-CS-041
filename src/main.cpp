@@ -1,28 +1,9 @@
-/**
- * @file main.cpp
- * @brief Entry point for the Smart Campus Management System (SCMS)
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: All 25 concepts demonstrated through the 6 modules.
- *               Runtime polymorphism via base pointers (Person*, Reportable*).
- *               Exception handling with try/catch throughout.
- *               Memory management: dynamic allocation and deallocation.
- *
- * Compile:  g++ -std=c++17 -Wall -Wextra src/person, src/course,
- *               src/library, src/finance, src/hostel,
- *               src/utils (.cpp files) and src/main.cpp -o scms
- * Run:      ./scms
- */
 
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
 using namespace std;
 
-// ── Module headers ─────────────────────────────────────────────
 #include "person/Person.h"
 #include "person/Student.h"
 #include "person/GradStudent.h"
@@ -38,9 +19,6 @@ using namespace std;
 #include "utils/Utils.h"
 #include "utils/Reports.h"
 
-// ─────────────────────────────────────────────────────────────
-// Global storage (arrays — no STL containers per requirements)
-// ─────────────────────────────────────────────────────────────
 const int MAX_STUDENTS   = 50;
 const int MAX_FACULTY    = 20;
 const int MAX_STAFF      = 20;
@@ -65,9 +43,6 @@ int feeRecordCount  = 0;
 Library      library("data/library_catalog.txt");
 HostelManager hostelMgr("HITEC University Hostel");
 
-// ─────────────────────────────────────────────────────────────
-// Forward declarations
-// ─────────────────────────────────────────────────────────────
 void seedDemoData();
 void cleanupMemory();
 
@@ -79,26 +54,18 @@ void menuFinanceModule();
 void menuHostelModule();
 void menuReportModule();
 
-// ─────────────────────────────────────────────────────────────
-// main()
-// ─────────────────────────────────────────────────────────────
 int main() {
     Utils::printHeader("SMART CAMPUS MANAGEMENT SYSTEM");
     cout << "  HITEC University Taxila\n";
     cout << "  CS-104L: Object-Oriented Programming\n\n";
 
-    // Load library catalog from file (File I/O — Module 3)
     library.loadFromFile();
 
-    // Seed demo data so the system has something to work with
     seedDemoData();
 
     menuMain();
-
-    // Save library catalog on exit
+    
     library.saveToFile();
-
-    // Save campus report to file (Module 6)
     Reports::saveCampusReportToFile(
         "data/campus_report.txt",
         students, studentCount,
@@ -106,21 +73,15 @@ int main() {
         library
     );
 
-    // Clean up all dynamic memory
     cleanupMemory();
 
     cout << "\n[SCMS] Session ended. All data saved. Goodbye!\n";
     return 0;
 }
 
-// ─────────────────────────────────────────────────────────────
-// seedDemoData() — populates arrays with sample records
-// Demonstrates: new/delete, constructors, polymorphism
-// ─────────────────────────────────────────────────────────────
 void seedDemoData() {
     cout << "\n[SCMS] Loading demo data...\n";
 
-    // ── Faculty ───────────────────────────────────────────────
     faculty[facultyCount++] = new Faculty(
         "Dr. Ahmed Khan", "35202-1234567-1", 45, "0300-1111111",
         "F001", "Computer Science", "Associate Professor");
@@ -129,7 +90,6 @@ void seedDemoData() {
         "Ms. Sara Malik", "35202-7654321-2", 35, "0300-2222222",
         "F002", "Computer Science", "Lecturer");
 
-    // ── Students ──────────────────────────────────────────────
     students[studentCount++] = new Student(
         "Ali Hassan", "35202-1111111-3", 20, "0311-1111111",
         "2023-CS-001", 3, 3.8);
@@ -142,18 +102,15 @@ void seedDemoData() {
         "Usman Tariq", "35202-3333333-5", 20, "0311-3333333",
         "2023-CS-003", 2, 2.9);
 
-    // Multi-level inheritance: GradStudent
     students[studentCount++] = new GradStudent(
         "Dr. Bilal Qureshi", "35202-4444444-6", 26, "0311-4444444",
         "2022-MS-001", 7, 3.9,
         "Deep Learning for NLP", "Dr. Ahmed Khan", "Artificial Intelligence");
 
-    // ── Staff ─────────────────────────────────────────────────
     staffMembers[staffCount++] = new Staff(
         "Rashid Gardener", "35202-5555555-7", 40, "0300-5555555",
         "ST001", "Grounds Staff", 35000.0);
 
-    // ── Courses ───────────────────────────────────────────────
     courses[courseCount++] = new Course(
         "CS-104L", "Object-Oriented Programming",
         3, faculty[0], 30);
@@ -162,7 +119,6 @@ void seedDemoData() {
         "CS-201", "Data Structures and Algorithms",
         3, faculty[1], 25);
 
-    // ── Enroll students in courses (with exception handling) ──
     try {
         courses[0]->enrollStudent(students[0]);
         courses[0]->enrollStudent(students[1]);
@@ -174,8 +130,7 @@ void seedDemoData() {
     } catch (const CapacityExceededException& e) {
         cout << "[Error] " << e.what() << "\n";
     }
-
-    // ── Library items (new — owned by Library) ────────────────
+    
     library.addItem(new Book(
         "LIB001", "C++ How to Program", "Deitel & Deitel",
         2017, "978-0134448237", "Computer Science", 3));
@@ -189,15 +144,11 @@ void seedDemoData() {
         "LIB003", "IEEE Transactions on Software Engineering",
         "IEEE", 2024, "0098-5589", 50, 1));
 
-    // ── Fee Records ───────────────────────────────────────────
     feeRecords[feeRecordCount++] = FeeRecord(students[0], 45000.0, 15000.0);
     feeRecords[feeRecordCount++] = FeeRecord(students[1], 45000.0, 0.0);
     feeRecords[feeRecordCount++] = FeeRecord(students[2], 45000.0, 15000.0);
 
-    // Demonstrate operator-=  (payment)
     feeRecords[0] -= 30000.0;
-
-    // ── Hostel Setup ──────────────────────────────────────────
     hostelMgr.addBlock("Block-A");
     hostelMgr.addBlock("Block-B");
     hostelMgr.addRoomToBlock(0, 101, "double", 1);
@@ -210,21 +161,14 @@ void seedDemoData() {
     cout << "[SCMS] Demo data loaded successfully.\n";
 }
 
-// ─────────────────────────────────────────────────────────────
-// cleanupMemory() — deletes all dynamically allocated objects
-// ─────────────────────────────────────────────────────────────
 void cleanupMemory() {
     for (int i = 0; i < studentCount;    i++) { delete students[i];    students[i]    = nullptr; }
     for (int i = 0; i < facultyCount;    i++) { delete faculty[i];     faculty[i]     = nullptr; }
     for (int i = 0; i < staffCount;      i++) { delete staffMembers[i];staffMembers[i]= nullptr; }
     for (int i = 0; i < courseCount;     i++) { delete courses[i];     courses[i]     = nullptr; }
     for (int i = 0; i < enrollmentCount; i++) { delete enrollments[i]; enrollments[i] = nullptr; }
-    // Library destructor handles its own items
 }
 
-// ─────────────────────────────────────────────────────────────
-// MAIN MENU
-// ─────────────────────────────────────────────────────────────
 void menuMain() {
     int choice = 0;
     while (choice != 7) {
@@ -251,9 +195,6 @@ void menuMain() {
     }
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODULE 1 — PERSON MANAGEMENT
-// ─────────────────────────────────────────────────────────────
 void menuPersonModule() {
     int choice = 0;
     while (choice != 6) {
@@ -331,12 +272,11 @@ void menuPersonModule() {
             cout << "  Staff added.\n";
 
         } else if (choice == 5) {
-            // Runtime polymorphism: call displayInfo() via Person*
             Utils::printHeader("ALL PERSONS (Polymorphism Demo)");
             cout << "\n--- STUDENTS ---\n";
             for (int i = 0; i < studentCount; i++) {
-                Person* p = students[i]; // base pointer
-                p->displayInfo();        // virtual dispatch
+                Person* p = students[i];
+                p->displayInfo();     
             }
             cout << "\n--- FACULTY ---\n";
             for (int i = 0; i < facultyCount; i++) {
@@ -352,9 +292,6 @@ void menuPersonModule() {
     }
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODULE 2 — COURSE & ENROLLMENT
-// ─────────────────────────────────────────────────────────────
 void menuCourseModule() {
     int choice = 0;
     while (choice != 6) {
@@ -388,7 +325,7 @@ void menuCourseModule() {
         } else if (choice == 2) {
             cout << "\n";
             for (int i = 0; i < courseCount; i++)
-                cout << *courses[i]; // uses overloaded operator<<
+                cout << *courses[i]; 
 
         } else if (choice == 3) {
             if (studentCount == 0 || courseCount == 0) {
@@ -439,7 +376,7 @@ void menuCourseModule() {
             if (a < 0 || a >= courseCount || b < 0 || b >= courseCount) {
                 cout << "  Invalid.\n"; continue;
             }
-            // operator+ returns dynamically allocated array — we must delete[]
+            
             Student** merged = *courses[a] + *courses[b];
             int total = courses[a]->getWaitListCount() +
                         courses[b]->getWaitListCount();
@@ -448,14 +385,11 @@ void menuCourseModule() {
                 if (merged && merged[i])
                     cout << "  - " << merged[i]->getName() << "\n";
             }
-            delete[] merged; // caller's responsibility
+            delete[] merged; 
         }
     }
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODULE 3 — LIBRARY
-// ─────────────────────────────────────────────────────────────
 void menuLibraryModule() {
     int choice = 0;
     while (choice != 7) {
@@ -496,7 +430,7 @@ void menuLibraryModule() {
             LibraryItem* found = library.searchByTitle(title);
             if (found) {
                 cout << "  Found!\n";
-                found->displayInfo(); // polymorphic
+                found->displayInfo(); 
             } else {
                 cout << "  Item not found.\n";
             }
@@ -530,9 +464,6 @@ void menuLibraryModule() {
     }
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODULE 4 — FEE & FINANCE
-// ─────────────────────────────────────────────────────────────
 void menuFinanceModule() {
     int choice = 0;
     while (choice != 6) {
@@ -570,21 +501,19 @@ void menuFinanceModule() {
             int idx = Utils::getIntInput("  Select record: ");
             if (idx < 0 || idx >= feeRecordCount) { cout << "  Invalid.\n"; continue; }
             double amt = Utils::getDoubleInput("  Payment amount: ");
-            feeRecords[idx] -= amt; // operator-=
+            feeRecords[idx] -= amt; 
 
         } else if (choice == 3) {
             Reports::displayAllFeeRecords(feeRecords, feeRecordCount);
             Reports::reportOutstandingBalances(feeRecords, feeRecordCount);
 
         } else if (choice == 4) {
-            // Demonstrate static counter and deep copy
             Invoice inv1(Utils::getCurrentDate());
             inv1.addItem("Semester Fee", 45000.0);
             inv1.addItem("Library Fee", 500.0);
-            cout << inv1; // operator<<
+            cout << inv1; 
 
-            // Deep copy
-            Invoice inv2 = inv1; // copy constructor
+            Invoice inv2 = inv1; 
             inv2.addItem("Hostel Fee", 15000.0);
             cout << "\n[Copy of Invoice with extra item]\n";
             cout << inv2;
@@ -596,7 +525,7 @@ void menuFinanceModule() {
             if (feeRecordCount == 0) { cout << "  No records.\n"; continue; }
             int idx = Utils::getIntInput("  Record to copy (index): ");
             if (idx < 0 || idx >= feeRecordCount) { cout << "  Invalid.\n"; continue; }
-            FeeRecord copy = feeRecords[idx]; // copy constructor
+            FeeRecord copy = feeRecords[idx]; 
             cout << "\n  Original:\n";
             feeRecords[idx].displayFeeRecord();
             cout << "\n  Copy:\n";
@@ -605,9 +534,6 @@ void menuFinanceModule() {
     }
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODULE 5 — HOSTEL
-// ─────────────────────────────────────────────────────────────
 void menuHostelModule() {
     int choice = 0;
     while (choice != 5) {
@@ -644,13 +570,9 @@ void menuHostelModule() {
             hostelMgr.vacateRoom(rollNo, roomNo);
         }
     }
-    // Always show occupancy after hostel operations
     hostelMgr.generateReport();
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODULE 6 — REPORTS & UTILITIES
-// ─────────────────────────────────────────────────────────────
 void menuReportModule() {
     int choice = 0;
     while (choice != 7) {

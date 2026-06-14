@@ -1,13 +1,3 @@
-/**
- * @file Enrollment.cpp
- * @brief Implementation of the Enrollment class
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Encapsulation, Aggregation
- */
 
 #include "Enrollment.h"
 #include <iostream>

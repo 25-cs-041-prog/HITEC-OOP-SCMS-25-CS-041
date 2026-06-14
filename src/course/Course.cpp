@@ -1,21 +1,9 @@
-/**
- * @file Course.cpp
- * @brief Implementation of the Course class
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Operator Overloading (==, <<, +), Friend Function,
- *               Custom Exception Handling, Array Management
- */
 
 #include "Course.h"
 #include <iostream>
 #include <iomanip>
 using namespace std;
 
-// ── Default Constructor ────────────────────────────────────────
 Course::Course()
     : courseCode("CS000"), courseName("Unknown"), creditHours(3),
       instructor(nullptr), maxCapacity(30),
@@ -23,7 +11,6 @@ Course::Course()
     for (int i = 0; i < MAX_WAITLIST; i++) waitList[i] = nullptr;
 }
 
-// ── Parameterised Constructor ──────────────────────────────────
 Course::Course(const string& courseCode, const string& courseName,
                int creditHours, Faculty* instructor, int maxCapacity)
     : courseCode(courseCode), courseName(courseName),
@@ -32,8 +19,6 @@ Course::Course(const string& courseCode, const string& courseName,
     for (int i = 0; i < MAX_WAITLIST; i++) waitList[i] = nullptr;
 }
 
-// ── enrollStudent() ────────────────────────────────────────────
-// Throws CapacityExceededException when course is full
 void Course::enrollStudent(Student* student) {
     if (enrolledCount >= maxCapacity) {
         throw CapacityExceededException(courseCode, maxCapacity);
@@ -42,7 +27,6 @@ void Course::enrollStudent(Student* student) {
     enrolledCount++;
 }
 
-// ── addToWaitList() ────────────────────────────────────────────
 void Course::addToWaitList(Student* student) {
     if (waitListCount < MAX_WAITLIST) {
         waitList[waitListCount++] = student;
@@ -53,14 +37,10 @@ void Course::addToWaitList(Student* student) {
     }
 }
 
-// ── operator== ────────────────────────────────────────────────
-// Two courses are equal if their course codes match
 bool Course::operator==(const Course& other) const {
     return courseCode == other.courseCode;
 }
 
-// ── operator<< (friend) ───────────────────────────────────────
-// Prints course details to any ostream (cout, file, etc.)
 ostream& operator<<(ostream& os, const Course& course) {
     os << "┌─────────────────────────────────┐\n";
     os << "│          COURSE DETAILS         │\n";
@@ -78,14 +58,10 @@ ostream& operator<<(ostream& os, const Course& course) {
     return os;
 }
 
-// ── operator+ ─────────────────────────────────────────────────
-// Merges two waiting lists into a new dynamically allocated array.
-// IMPORTANT: The caller is responsible for calling delete[] on the result.
 Student** Course::operator+(const Course& other) const {
     int totalSize = waitListCount + other.waitListCount;
     if (totalSize == 0) return nullptr;
 
-    // Dynamically allocate merged array
     Student** merged = new Student*[totalSize];
     for (int i = 0; i < waitListCount; i++)
         merged[i] = waitList[i];
@@ -95,7 +71,6 @@ Student** Course::operator+(const Course& other) const {
     return merged;
 }
 
-// ── getWaitListEntry() ────────────────────────────────────────
 Student* Course::getWaitListEntry(int i) const {
     if (i >= 0 && i < waitListCount)
         return waitList[i];

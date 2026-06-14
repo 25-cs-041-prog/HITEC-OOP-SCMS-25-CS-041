@@ -1,11 +1,3 @@
-/**
- * @file HostelBlock.cpp
- * @brief Implementation of HostelBlock (composition with Room)
- * @author [Your Name] | Roll No: [XXXX]
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- */
 
 #include "HostelBlock.h"
 #include <iostream>
