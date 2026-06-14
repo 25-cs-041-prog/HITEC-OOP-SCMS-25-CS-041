@@ -1,13 +1,3 @@
-/**
- * @file Book.cpp
- * @brief Implementation of the Book class
- * @author Aimen Fatima | Roll No: 25-cs-041
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Single Inheritance, Override, File I/O serialisation
- */
 
 #include "Book.h"
 #include <iostream>
@@ -55,7 +45,6 @@ void Book::displayInfo() const {
     cout << "└─────────────────────────────────┘\n";
 }
 
-// Format: BOOK|itemID|title|author|year|isbn|genre|copies
 string Book::toFileString() const {
     return "BOOK|" + itemID + "|" + title + "|" + author + "|" +
            to_string(publicationYear) + "|" + isbn + "|" + genre + "|" +
