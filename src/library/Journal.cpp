@@ -1,11 +1,3 @@
-/**
- * @file Journal.cpp
- * @brief Implementation of the Journal class
- * @author Aimen Fatima | Roll No: 25-cs-041
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- */
 
 #include "Journal.h"
 #include <iostream>
@@ -43,7 +35,6 @@ void Journal::displayInfo() const {
     cout << "└─────────────────────────────────┘\n";
 }
 
-// Format: JOURNAL|itemID|title|author|year|issn|volume|issueNumber
 string Journal::toFileString() const {
     return "JOURNAL|" + itemID + "|" + title + "|" + author + "|" +
            to_string(publicationYear) + "|" + issn + "|" +
