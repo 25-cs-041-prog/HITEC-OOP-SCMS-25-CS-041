@@ -1,13 +1,3 @@
-/**
- * @file Enrollment.cpp
- * @brief Implementation of the Enrollment class
- * @author Aimen Fatima | Roll No: 25-cs-041
- * @course CS-104L: Object-Oriented Programming
- * @inst HITEC University Taxila
- * @date 2025
- *
- * OOP Concepts: Encapsulation, Aggregation
- */
 
 #include "Enrollment.h"
 #include <iostream>
