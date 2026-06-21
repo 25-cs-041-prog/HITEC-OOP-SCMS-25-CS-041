@@ -1,11 +1,10 @@
 # Smart Campus Management System (SCMS)
 
 Aimen Fatima
-Reg No: 25-cs-041
+Reg No: 25-cs-041 |
 Malaika Aziz
-Reg No: 25-cs-146
-Course: OOP (CS-104L)
-HITEC University Taxila
+Reg No: 25-cs-146 |
+Course: OOP (CS-104L) 
 
 ## Project Description
 The Smart Campus Management System (SCMS) is a console-based C++ application that
