@@ -1,7 +1,9 @@
 # Smart Campus Management System (SCMS)
 
-Student: Aimen Fatima
-Roll No: 25-cs-041
+Aimen Fatima
+Reg No: 25-cs-041
+Malaika Aziz
+Reg No: 25-cs-146
 Course: OOP (CS-104L)
 HITEC University Taxila
 
